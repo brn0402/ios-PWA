@@ -1,6 +1,6 @@
 const CACHE_NAME = 'japan-trip-v1';
 const ASSETS = [
-  './Japan Trip iOS Web App_Bauhaus.html',
+  './Japan Trip.html',
   './manifest.json',
   './icon-192.png',
   './icon-512.png',
