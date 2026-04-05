@@ -389,13 +389,15 @@
 
         /* Day grid */
         .day-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            display: flex;
             gap: 10px;
             padding: 12px 16px;
+            width: 100%;
         }
 
         .day-pill {
+            flex: 1;
+            min-width: 0;
             background: var(--paper2);
             /* border: 1px solid var(--paper3); */
             color: var(--ink);
@@ -1467,6 +1469,7 @@
             <div class="region-selector">
                 <button class="region-btn active" onclick="setRegion('toyama')">富山 Toyama</button>
                 <button class="region-btn" onclick="setRegion('kanazawa')">金澤 Kanazawa</button>
+                <button class="region-btn" onclick="setRegion('tateyama')">立山 Tateyama</button>
             </div>
 
             <!-- Day grid -->
@@ -1634,35 +1637,28 @@
                         <div class="info-card-arrow">▾</div>
                     </div>
                     <div class="info-card-body">
-                        <div class="info-row"><span class="info-label">期間</span><span class="info-val">4/7 –
-                                4/10（3晚）</span></div>
+                        <div class="info-row"><span class="info-label">期間</span><span
+                                class="info-val">4/7–4/10（3晚）<br>4/14–4/15（1晚）</span></div>
                         <div class="info-row"><span class="info-label">地點</span><span class="info-val">荒町</span></div>
                         <div class="info-row"><span class="info-label">小提示</span><span
-                                class="info-val accent">可免費拿一張電車票！</span>
-                        </div>
+                                class="info-val accent">可免費拿一張電車票！</span></div>
                         <a class="map-link" href="https://maps.app.goo.gl/GLc1tsePid1QC7PG8" target="_blank">📍 在 Google
-                            Maps
-                            中查看</a>
+                            Maps 中查看</a>
                     </div>
                 </div>
 
                 <div class="info-card">
                     <div class="info-card-header" onclick="toggleCard(this)">
                         <div class="info-card-icon">🏨</div>
-                        <div class="info-card-title">Kanazawa 旅音</div>
+                        <div class="info-card-title">Town Hotel 41 金澤</div>
                         <div class="info-card-arrow">▾</div>
                     </div>
                     <div class="info-card-body">
                         <div class="info-row"><span class="info-label">期間</span><span class="info-val">4/10 –
                                 4/12（2晚）</span></div>
-                        <div class="info-row"><span class="info-label">Check-in</span><span
-                                class="info-val">10:00–18:00</span>
-                        </div>
-                        <div class="info-row"><span class="info-label">地點</span><span class="info-val">金澤車站附近</span>
-                        </div>
+                        <div class="info-row"><span class="info-label">地點</span><span class="info-val">片町附近</span></div>
                         <a class="map-link" href="https://maps.app.goo.gl/SVVcojwxKgtk9NpV7" target="_blank">📍 在 Google
-                            Maps
-                            中查看</a>
+                            Maps 中查看</a>
                     </div>
                 </div>
 
@@ -1677,8 +1673,33 @@
                                 4/14（2晚）</span></div>
                         <div class="info-row"><span class="info-label">地點</span><span class="info-val">附近熱鬧，多居酒屋</span>
                         </div>
-                        <a class="map-link" href="https://maps.app.goo.gl/camN7UNNCaReV5AHA" target="_blank">📍 在
+                        <img src="tmark-hotel.png" style="width:100%; border-radius:12px; border:1px solid var(--ink); margin-top:12px; mix-blend-mode: multiply;">
+                        <a class="map-link" href="https://maps.app.goo.gl/camN7UNNCaReV5AHA" target="_blank" style="margin-top:12px; display:block">📍 在
                             Google Maps 中查看</a>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <div class="info-card-header" onclick="toggleCard(this)">
+                        <div class="info-card-icon">🏨</div>
+                        <div class="info-card-title">Unito Residence Asakusa 東京</div>
+                        <div class="info-card-arrow">▾</div>
+                    </div>
+                    <div class="info-card-body">
+                        <div class="info-row"><span class="info-label">期間</span><span class="info-val">4/15 –
+                                4/18（3晚）</span></div>
+                        <div class="info-row"><span class="info-label">地點</span><span class="info-val">墨田本所</span></div>
+                        <div style="font-size:12px; line-height:1.6; margin-top:12px; color:var(--ink2);">
+                            大門: <b>【5359】→【#】</b><br>
+                            數字鎖: <b>8364→🔒</b><br>
+                            Room: <b>402</b><br>
+                            Reservation code: <b>BWOHZ</b><br>
+                            WiFi: SSID-AE289D (Pass: y2Sy2UjT)
+                        </div>
+                        <img src="unito-asakusa.png"
+                            style="width:100%; border-radius:12px; border:2px solid var(--ink); margin-top:12px;">
+                        <a class="map-link" href="https://maps.app.goo.gl/vZ5m5wj3nNbREWgW8" target="_blank"
+                            style="margin-top:12px;">📍 在 Google Maps 中查看</a>
                     </div>
                 </div>
 
@@ -1705,6 +1726,26 @@
                     <div class="ticket-name">市電・バス 一日フリーきっぷ</div>
                     <div class="ticket-detail">富山地鐵市內電車・環狀線・富山港線・地鐵巴士<br>My Route App 購買 or 現場購買</div>
                     <div class="ticket-price">¥650</div>
+                </div>
+
+                <div class="ticket-card">
+                    <div class="ticket-name">立山黑部アルペンルート 套票</div>
+                    <div class="ticket-detail">4/14 電鐵富山站領票<br>包含電鐵富山 → 信濃大町 所有交通</div>
+                    <img src="tateyama-ticket.png"
+                        style="width:100%; border-radius:10px; margin-top:10px; mix-blend-mode: multiply;">
+                    <div class="ticket-price"
+                        style="border-top:1px dashed #2a504a; color:black; margin-top:12px; padding-top:12px;">預留憑證
+                    </div>
+                </div>
+
+                <div class="ticket-card">
+                    <div class="ticket-name">高速バス（長野 → 新宿）</div>
+                    <div class="ticket-detail">4/15 晚上班次，從長野前往新宿</div>
+                    <img src="nagano-bus-ticket.png"
+                        style="width:100%; border-radius:10px; margin-top:10px; mix-blend-mode: multiply;">
+                    <div class="ticket-price"
+                        style="border-top:1px dashed #503a2a; color:white; margin-top:12px; padding-top:12px;">預留憑證
+                    </div>
                 </div>
 
                 <!-- Bookings -->
@@ -1941,38 +1982,7 @@
                 ]
             },
             {
-                id: 'd1', label: 'D2 花の日', date: '4/8', weekday: '三',
-                region: 'toyama',
-                subtitle: '春の四重奏 + 玻璃美術館', weather: '☀️ 17°~6°',
-                events: [
-                    {
-                        time: '06:40', type: 'transitGroup', name: '🚃 前往春の四重奏會場',
-                        note: '路面電車→富山站→泊站→接駁至會場',
-                        map: '',
-                        subEvents: [
-                            { time: '06:40', name: '荒町 → 富山站', note: '搭路面電車 C10 月台，約 5 分到站', map: 'https://maps.app.goo.gl/GLc1tsePid1QC7PG8' },
-                            { time: '07:09', name: '愛之風 → 泊站', note: '47分 · 4號月台 · 春の四重奏きっぷ ¥1000', map: 'https://maps.app.goo.gl/zyft49WNAbxD9s3X9' },
-                            { time: '07:56', name: '抵達泊站', note: '搭接駁巴士 or 計程車 ¥1500 到會場', map: 'https://maps.app.goo.gl/zyft49WNAbxD9s3X9' },
-                        ]
-                    },
-                    { time: '08:00', type: 'highlight', name: '舟川 春の四重奏 🌸', note: '立山連峰 × 櫻花 × 油菜花 × 鬱金香\n1,200m 280本桜並木！漫步賞景', map: 'https://maps.app.goo.gl/uJnDWz1a9tA3vbca8' },
-                    { time: '11:00', type: 'food', name: '早午餐：朝日町螃蟹湯 ＋ 入善炸雞', note: '會場美食區，必吃！', map: 'https://maps.app.goo.gl/uJnDWz1a9tA3vbca8' },
-                    {
-                        time: '12:20', type: 'transitGroup', name: '🚃 返回富山市區',
-                        note: '泊站→富山站→西町（路面電車）',
-                        map: '',
-                        subEvents: [
-                            { time: '12:20', name: '泊站 → 富山站', note: '鐵道返回', map: 'https://maps.app.goo.gl/zyft49WNAbxD9s3X9' },
-                            { time: '13:30', name: '路面電車 → 西町站', note: '使用一日券 ¥650', map: 'https://maps.app.goo.gl/kVGaV9WkiEgimsT19' },
-                        ]
-                    },
-                    { time: '14:00', type: 'highlight', name: '富山市玻璃美術館', note: '隈研吾設計 · 市立圖書館同棟 · 9:30–18:00', map: 'https://maps.app.goo.gl/7ddzpNqjq7Sj3QGK6' },
-                    { time: '17:00', type: 'food', name: '糸庄 大腸烏龍麵 🍜', note: '一開門就排隊！壽喜燒風味濃郁湯頭\n比較南一點，路面電車到南富山', map: 'https://maps.app.goo.gl/4K3HJGB7ArrfADWL8' },
-                    { time: '19:00', type: 'spot', name: '富山城址公園 夜櫻', note: '若還有體力，夜晚燈光很美', map: 'https://maps.app.goo.gl/58aj15Eq2Px3ymbQ9' },
-                ]
-            },
-            {
-                id: 'd2', label: 'D3 海', date: '4/9', weekday: '四',
+                id: 'd1', label: 'D2 一路向北！', date: '4/8', weekday: '三',
                 region: 'toyama',
                 subtitle: '環水公園 → 高岡 → 雨晴海岸', weather: '🌥️ 17°~6°',
                 events: [
@@ -1992,7 +2002,45 @@
                         ]
                     },
                     { time: '14:00', type: 'highlight', name: '雨晴海岸 🌊', note: '立山連峰 × 海岸絕景\nCafe ISOMI TERRACE · 哆啦A夢紀念品', map: 'https://maps.app.goo.gl/FP4VTWSw7RdqrgBZ6' },
-                    { time: '晚餐', type: 'food', name: '晚餐：富山居酒屋', note: '吃前幾天沒吃到的 · 可以 walk in', map: 'https://maps.app.goo.gl/g68UWYYCHapC1qMK9' },
+                    {
+                        time: '晚餐', type: 'foodGroup', name: '晚餐候選',
+                        note: 'うしまる 燒肉 / Doppieta 義式料理', map: '',
+                        subEvents: [
+                            { time: '', name: 'うしまる 燒肉', note: '不貴！', map: 'https://maps.app.goo.gl/5Vjp3eBVimvnp2SR7' },
+                            { time: '', name: 'Doppieta 義式料理', note: '人均 ¥500–1000', map: 'https://maps.app.goo.gl/g68UWYYCHapC1qMK9' },
+                        ]
+                    },
+                ]
+            },
+            {
+                id: 'd2', label: 'D3 看花去！', date: '4/9', weekday: '四',
+                region: 'toyama',
+                subtitle: '春の四重奏 + 玻璃美術館', weather: '☀️ 17°~6°',
+                events: [
+                    {
+                        time: '06:40', type: 'transitGroup', name: '🚃 前往春の四重奏會場',
+                        note: '路面電車→富山站→泊站→接駁至會場\n今天用電車巴士搭到飽 ¥650',
+                        map: '',
+                        subEvents: [
+                            { time: '06:40', name: '荒町 → 富山站', note: '搭路面電車 C10 月台，約 5 分到站', map: 'https://maps.app.goo.gl/GLc1tsePid1QC7PG8' },
+                            { time: '07:09', name: '愛之風 → 泊站', note: '47分 · 春の四重奏きっぷ ¥1000\n最好 6:40-6:50 出發！', map: 'https://maps.app.goo.gl/zyft49WNAbxD9s3X9' },
+                            { time: '07:56', name: '抵達泊站', note: '花期限定接駁巴士（9:00~17:00 每 15 分）\nor 計程車 ¥1500 到會場', map: 'https://maps.app.goo.gl/zyft49WNAbxD9s3X9' },
+                        ]
+                    },
+                    { time: '08:00', type: 'highlight', name: '舟川 春の四重奏 🌸', note: '立山連峰 × 櫻花 × 油菜花 × 鬱金香\n1,200m 280本桜並木！漫步賞景', map: 'https://maps.app.goo.gl/uJnDWz1a9tA3vbca8' },
+                    { time: '11:00', type: 'food', name: '早午餐：朝日町螃蟹湯 ＋ 入善炸雞', note: '會場美食區，必吃！', map: 'https://maps.app.goo.gl/uJnDWz1a9tA3vbca8' },
+                    {
+                        time: '12:20', type: 'transitGroup', name: '🚃 返回富山市區',
+                        note: '泊站→富山站→西町（路面電車）',
+                        map: '',
+                        subEvents: [
+                            { time: '12:20', name: '泊站 → 富山站', note: '鐵道返回', map: 'https://maps.app.goo.gl/zyft49WNAbxD9s3X9' },
+                            { time: '13:30', name: '路面電車 → 西町站', note: '使用一日券 ¥650', map: 'https://maps.app.goo.gl/kVGaV9WkiEgimsT19' },
+                        ]
+                    },
+                    { time: '14:00', type: 'highlight', name: '富山市玻璃美術館 🎨', note: '隈研吾設計 · 市立圖書館同棟 · 9:30–18:00', map: 'https://maps.app.goo.gl/7ddzpNqjq7Sj3QGK6' },
+                    { time: '17:00', type: 'food', name: '糸庄 大腸烏龍麵 🍜', note: '一開門就排隊！壽喜燒風味濃郁湯頭\n比較南一點，路面電車到南富山\n⚠️ 建議一開門就去排隊', map: 'https://maps.app.goo.gl/4K3HJGB7ArrfADWL8' },
+                    { time: '19:00', type: 'spot', name: '富山城址公園 夜櫻 🌸', note: '若還有體力，夜晚燈光很美', map: 'https://maps.app.goo.gl/58aj15Eq2Px3ymbQ9' },
                 ]
             },
             {
@@ -2002,7 +2050,7 @@
                 events: [
                     { time: '07:09~', type: 'transit', name: '愛之風 → 金澤', note: '¥1,290（比新幹線省 ¥2,100！）\n7:16 / 7:24 / 7:39 / 8:05 可選', map: 'https://maps.app.goo.gl/g68UWYYCHapC1qMK9' },
                     { time: '08:30', type: 'food', name: 'Townsfolk Coffee ☕', note: '邊喝咖啡看玉川公園・可能很多人！', map: 'https://maps.app.goo.gl/wFke7qqkv1N7KAuv6' },
-                    { time: '09:00', type: 'transit', name: '金澤旅音 寄放行李', note: 'Check-in 10:00–18:00', map: 'https://maps.app.goo.gl/SVVcojwxKgtk9NpV7' },
+                    { time: '09:00', type: 'transit', name: 'Town Hotel 41 寄放行李', note: 'Check-in', map: 'https://maps.app.goo.gl/SVVcojwxKgtk9NpV7' },
                     { time: '10:00', type: 'spot', name: '金澤車站 購物', note: 'あんと・Rinto・FORUS\n多數 10:00 才開門', map: 'https://maps.app.goo.gl/Yy1jhrTcD1fpLaJ87' },
                     { time: '11:00', type: 'reserved', name: '🥩 肉匠 JADE（已預約！）', note: '能登牛認證 ランチ・2人·已訂位\n金澤駅徒步 3 分', map: 'https://maps.app.goo.gl/Yi2Pjt5TfGqB7Vc47' },
                     { time: '14:30', type: 'spot', name: '近江町市場散策', note: '東出咖啡店（焦糖布丁）\n能登牛たくみ・金澤關東煮 Ippukuya', map: 'https://maps.app.goo.gl/9hWAn7eFjYJ77m7v8' },
@@ -2064,6 +2112,63 @@
                     { time: '14:00', type: 'highlight', name: '尾山神社', note: '前田利家 × 松 · 神社大門（和漢洋融合）\n抽籤！7種不同籤詩\n東神門：連接金澤城', map: 'https://maps.app.goo.gl/2sRj4qUzqM3FcvBj8' },
                     { time: '15:30', type: 'food', name: 'COYA 可麗露 ¥250', note: '尾山神社附近', map: 'https://maps.app.goo.gl/84EgJdXhVFAZtZVi8' },
                     { time: '晚餐', type: 'food', name: '自由探索居酒屋', note: 'Tmark 周邊有很多選擇', map: 'https://maps.app.goo.gl/camN7UNNCaReV5AHA' },
+                ]
+            },
+            {
+                id: 'd7', label: 'D8 回富山', date: '4/14', weekday: '二',
+                region: 'kanazawa',
+                subtitle: '寄行李 → 返富山 → 領立山黑部票', weather: '⛅️ 18°~8°',
+                events: [
+                    {
+                        time: '早上', type: 'transitGroup', name: '📦 寄行李至東京',
+                        note: 'ヤマト運輸 金沢近江町 → 墨田本所（天空樹旁）',
+                        map: '',
+                        subEvents: [
+                            { time: '早上', name: 'ヤマト運輸 金沢近江町営業所', note: '衣服：15、16 兩套衣服、襪子', map: 'https://maps.app.goo.gl/cXMw1c6AF3d9d9KKA' },
+                            { time: '', name: '寄送目的地：ヤマト運輸 墨田本所営業所', note: '⚠️ 注意：天空樹無法代收', map: 'https://maps.app.goo.gl/vZ5m5wj3nNbREWgW8' },
+                        ]
+                    },
+                    {
+                        time: '上午', type: 'transitGroup', name: '🚃 愛之風 金澤 → 富山',
+                        note: '¥1,290 · 約 1 小時',
+                        map: '',
+                        subEvents: [
+                            { time: '上午', name: '愛之風 金澤 → 富山', note: '¥1,290', map: 'https://maps.app.goo.gl/g68UWYYCHapC1qMK9' },
+                            { time: '抵達', name: 'Hotel Enoe 富山 Check-in', note: '4/14–4/15 入住', map: 'https://maps.app.goo.gl/GLc1tsePid1QC7PG8' },
+                        ]
+                    },
+                    { time: '下午', type: 'reserved', name: '🎫 領取立山黑部交通套票', note: '電鐵富山站窗口領票\n明天 4/15 使用', map: 'https://maps.app.goo.gl/dXHSbE3vhHep4HrFA' },
+                    { time: '晚上', type: 'spot', name: '行前準備', note: '超商買明天上山食物\n洋蔥式穿搭：手套、毛帽、圍巾、墨鏡、防曬\n室堂溫度約 -3°~14°，一定帶厚外套！', map: '' },
+                ]
+            },
+            {
+                id: 'd8', label: 'D9 立山黑部', date: '4/15', weekday: '三',
+                region: 'tateyama',
+                subtitle: '立山黑部アルペンルート', weather: '🏔 -3°~5°',
+                events: [
+                    { time: '04:30', type: 'spot', name: '⏰ 起床！', note: '4:50 出門，搭計程車去電鐵富山站', map: '' },
+                    {
+                        time: '05:10', type: 'transitGroup', name: '🚃 電鐵富山 → 立山站',
+                        note: '富山電鐵本線 約 1 小時',
+                        map: '',
+                        subEvents: [
+                            { time: '05:10', name: '電鐵富山站 出發', note: '本線 → 立山站', map: 'https://maps.app.goo.gl/dXHSbE3vhHep4HrFA' },
+                            { time: '06:00', name: '立山站抵達', note: '可以稍微逛一下，準備搭纜車', map: '' },
+                        ]
+                    },
+                    { time: '07:00', type: 'highlight', name: '⛰ 立山纜車（立山→美女平）', note: '⚠️ 這段有限制人數！一定要早來\n據說都會加開班次\n山頂積雪可達 13 公尺！', map: '' },
+                    { time: '07:30', type: 'highlight', name: '🚌 高原巴士（美女平→室堂）', note: '約 50 分 · 沿途欣賞萬年雪壁\n彌陀之原可中途下車散步', map: '' },
+                    { time: '09:00', type: 'highlight', name: '🏔 室堂 平原散策', note: '離星星最近的車站！海拔 2,450m\n雪壁高達 13–20m\n⚠️ 毛帽＋墨鏡＋防曬必備！', map: '' },
+                    { time: '~15:00', type: 'transit', name: '準備下山', note: '3–4 點開始下山\n搭同向交通回立山站', map: '' },
+                    {
+                        time: '傍晚', type: 'transitGroup', name: '🚌 長野→新宿 高速巴士',
+                        note: '穿越立山黑部至信濃大町，轉乘高速巴士至新宿',
+                        map: '',
+                        subEvents: [
+                            { time: '', name: '關電隧道電車 → 扇沢 → 信濃大町', note: '立山黑部アルペンルート 全線通過', map: '' },
+                            { time: '', name: '長野→新宿 高速巴士', note: '已購票 · 夜間班次', map: '' },
+                        ]
+                    },
                 ]
             },
         ];
