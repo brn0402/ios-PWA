@@ -1917,16 +1917,49 @@
                 </div>
             </div>
             <div class="modal-field">
-                <label class="modal-label">金額（日圓 ¥）</label>
-                <input type="number" class="modal-input" id="exp-amt" placeholder="0" inputmode="numeric">
+                <label class="modal-label">負責人</label>
+                <div class="cat-grid" style="grid-template-columns: 1fr 1fr">
+                    <div class="cat-opt sel" data-payer="善綸" onclick="selPayer(this)">👦🏻<div class="cat-opt-label">善綸
+                        </div>
+                    </div>
+                    <div class="cat-opt" data-payer="法愛" onclick="selPayer(this)">👧🏻<div class="cat-opt-label">法愛
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-field" style="display:flex; gap:12px; align-items:flex-end">
+                <div style="flex:1">
+                    <label class="modal-label">幣種</label>
+                    <div class="cat-grid" style="grid-template-columns: 1fr 1fr" id="currency-grid">
+                        <div class="cat-opt sel" data-curr="JPY" onclick="selCurrency(this)" style="padding: 14px 4px;">
+                            <div class="cat-opt-label" style="margin-top:0">¥ 日圓</div>
+                        </div>
+                        <div class="cat-opt" data-curr="NTD" onclick="selCurrency(this)" style="padding: 14px 4px;">
+                            <div class="cat-opt-label" style="margin-top:0">$ 台幣</div>
+                        </div>
+                    </div>
+                </div>
+                <div style="flex:1">
+                    <label class="modal-label">金額</label>
+                    <input type="number" class="modal-input" id="exp-amt" placeholder="0" inputmode="numeric">
+                </div>
             </div>
             <div class="modal-field">
                 <label class="modal-label">說明</label>
                 <input type="text" class="modal-input" id="exp-name" placeholder="例：糸庄 大腸烏龍麵">
             </div>
             <div class="modal-field">
+                <label class="modal-label">區域</label>
+                <div class="cat-grid" style="grid-template-columns: 1fr 1fr 1fr 1fr" id="region-grid">
+                    <div class="cat-opt" data-region="toyama" onclick="selModalRegion(this)" style="padding: 10px 2px;"><div class="cat-opt-label" style="margin-top:0">富山</div></div>
+                    <div class="cat-opt" data-region="kanazawa" onclick="selModalRegion(this)" style="padding: 10px 2px;"><div class="cat-opt-label" style="margin-top:0">金澤</div></div>
+                    <div class="cat-opt" data-region="tateyama" onclick="selModalRegion(this)" style="padding: 10px 2px;"><div class="cat-opt-label" style="margin-top:0">立山黑部</div></div>
+                    <div class="cat-opt" data-region="tokyo" onclick="selModalRegion(this)" style="padding: 10px 2px;"><div class="cat-opt-label" style="margin-top:0">東京</div></div>
+                </div>
+            </div>
+            <div class="modal-field">
                 <label class="modal-label">日期</label>
-                <input type="date" class="modal-input" id="exp-date" value="2026-04-07">
+                <input type="date" class="modal-input" id="exp-date">
             </div>
             <button class="modal-submit" onclick="addExpense()">記帳 ✓</button>
             <button class="modal-cancel" onclick="closeModal()">取消</button>
@@ -2222,8 +2255,12 @@
         let expenses = JSON.parse(localStorage.getItem('trip-expenses') || '[]');
         let checkedEvents = JSON.parse(localStorage.getItem('trip-checked') || '{}');
         let selectedCat = 'food';
+        let selectedPayer = '善綸';
+        let selectedCurrency = 'JPY';
+        let selectedModalRegion = 'toyama';
         let todos = JSON.parse(localStorage.getItem('trip-todos') || '[]');
         const RATE = 0.21; // JPY to TWD
+        const NOTION_GAS_URL = 'https://script.google.com/macros/s/AKfycbwyZ1N0m3M9MGmyjj5x7o9bRdJfOabTscAKjDjPCKHGnsRDf2MQw98PGhZBaZvLwI4B/exec'; // TODO: 填入 GAS URL
 
         // ── COVER ──────────────────────────────────────────────
         function openApp() {
@@ -2400,6 +2437,23 @@
         function openModal() {
             document.getElementById('expense-modal').classList.add('open');
             document.getElementById('exp-amt').focus();
+            
+            // Set date to today
+            const now = new Date();
+            const yyyy = now.getFullYear();
+            const mm = String(now.getMonth() + 1).padStart(2, '0');
+            const dd = String(now.getDate()).padStart(2, '0');
+            document.getElementById('exp-date').value = `${yyyy}-${mm}-${dd}`;
+
+            // Sync modal region to current activeRegion
+            selectedModalRegion = activeRegion;
+            document.querySelectorAll('#region-grid .cat-opt').forEach(c => {
+                if(c.dataset.region === activeRegion) {
+                    c.classList.add('sel');
+                } else {
+                    c.classList.remove('sel');
+                }
+            });
         }
         function closeModal() {
             document.getElementById('expense-modal').classList.remove('open');
@@ -2408,23 +2462,79 @@
         }
 
         function selCat(el) {
-            document.querySelectorAll('.cat-opt').forEach(c => c.classList.remove('sel'));
+            document.querySelectorAll('.cat-opt[data-cat]').forEach(c => c.classList.remove('sel'));
             el.classList.add('sel');
             selectedCat = el.dataset.cat;
+        }
+
+        function selPayer(el) {
+            document.querySelectorAll('.cat-opt[data-payer]').forEach(c => c.classList.remove('sel'));
+            el.classList.add('sel');
+            selectedPayer = el.dataset.payer;
+        }
+
+        function selCurrency(el) {
+            document.querySelectorAll('.cat-opt[data-curr]').forEach(c => c.classList.remove('sel'));
+            el.classList.add('sel');
+            selectedCurrency = el.dataset.curr;
+        }
+
+        function selModalRegion(el) {
+            document.querySelectorAll('#region-grid .cat-opt').forEach(c => c.classList.remove('sel'));
+            el.classList.add('sel');
+            selectedModalRegion = el.dataset.region;
         }
 
         const CAT_ICONS = { food: '🍜', transit: '🚃', spot: '🎭', shop: '🛍', hotel: '🏨', other: '✨' };
         const CAT_LABELS = { food: '餐飲', transit: '交通', spot: '景點', shop: '購物', hotel: '住宿', other: '其他' };
 
+        const NOTION_REGION_MAP = {
+            'toyama': '富山',
+            'kanazawa': '金澤',
+            'tateyama': '立山黑部',
+            'tokyo': '東京'
+        };
+
+        const NOTION_CAT_MAP = {
+            'food': '食',
+            'transit': '行',
+            'spot': '門票',
+            'shop': '購物',
+            'hotel': '住',
+            'other': '雜費'
+        };
+
         function addExpense() {
             const amt = parseInt(document.getElementById('exp-amt').value) || 0;
             const name = document.getElementById('exp-name').value || '消費';
-            const date = document.getElementById('exp-date').value || '2026-04-07';
+            const date = document.getElementById('exp-date').value;
             if (!amt) { alert('請輸入金額'); return; }
-            expenses.unshift({ cat: selectedCat, amt, name, date, id: Date.now() });
+            if (!date) { alert('請選擇日期'); return; }
+            expenses.unshift({ cat: selectedCat, amt, currency: selectedCurrency, name, date, payer: selectedPayer, region: selectedModalRegion, id: Date.now() });
             localStorage.setItem('trip-expenses', JSON.stringify(expenses));
             renderExpenses();
             closeModal();
+
+            // Background sync to Notion via GAS
+            if (NOTION_GAS_URL && NOTION_GAS_URL.startsWith('http')) {
+                const payload = {
+                    item: name,
+                    date: date,
+                    jpy: selectedCurrency === 'JPY' ? amt : null,
+                    ntd: selectedCurrency === 'NTD' ? amt : null,
+                    category: NOTION_CAT_MAP[selectedCat] || '雜費',
+                    payer: selectedPayer,
+                    region: NOTION_REGION_MAP[selectedModalRegion] || '富山'
+                };
+
+                fetch(NOTION_GAS_URL, {
+                    method: 'POST',
+                    body: JSON.stringify(payload),
+                    headers: {
+                        'Content-Type': 'text/plain;charset=utf-8'
+                    }
+                }).catch(err => console.error("Notion sync failed:", err));
+            }
         }
 
         function deleteExpense(id) {
@@ -2434,14 +2544,16 @@
         }
 
         function renderExpenses() {
-            const total = expenses.reduce((a, e) => a + e.amt, 0);
-            document.getElementById('total-jpy').textContent = '¥ ' + total.toLocaleString();
-            document.getElementById('total-twd').textContent = '≈ NT$ ' + Math.round(total * RATE).toLocaleString();
+            const getJpyAmt = e => e.currency === 'NTD' ? Math.round(e.amt / RATE) : e.amt;
+
+            const totalJpy = expenses.reduce((a, e) => a + getJpyAmt(e), 0);
+            document.getElementById('total-jpy').textContent = '¥ ' + totalJpy.toLocaleString();
+            document.getElementById('total-twd').textContent = '≈ NT$ ' + Math.round(totalJpy * RATE).toLocaleString();
             document.getElementById('rate-val').textContent = RATE;
             document.getElementById('rate-inv').textContent = (1 / RATE).toFixed(2);
 
             ['food', 'transit', 'spot', 'shop', 'hotel', 'other'].forEach(cat => {
-                const sum = expenses.filter(e => e.cat === cat).reduce((a, e) => a + e.amt, 0);
+                const sum = expenses.filter(e => e.cat === cat).reduce((a, e) => a + getJpyAmt(e), 0);
                 document.getElementById('cat-' + cat).textContent = '¥' + sum.toLocaleString();
             });
 
@@ -2457,17 +2569,20 @@
             let html = '';
             Object.keys(grouped).sort().reverse().forEach(date => {
                 const dateLabel = date.replace('2026-', '').replace('-', '/');
-                const dayTotal = grouped[date].reduce((a, e) => a + e.amt, 0);
+                const dayTotal = grouped[date].reduce((a, e) => a + getJpyAmt(e), 0);
                 html += `<div style="display:flex;justify-content:space-between;padding:10px 0 6px;font-size:10px;letter-spacing:2px;color:var(--ink3);border-bottom:1px solid rgba(139,58,42,0.12)">
       <span>${dateLabel}</span><span>¥${dayTotal.toLocaleString()}</span></div>`;
                 grouped[date].forEach(e => {
+                    const isNtd = e.currency === 'NTD';
+                    const ntdDisplay = isNtd ? e.amt : Math.round(e.amt * RATE);
+                    const mainAmtDisplay = isNtd ? 'NT$' + e.amt.toLocaleString() : '¥' + e.amt.toLocaleString();
                     html += `<div class="expense-item">
         <div class="expense-cat-icon">${CAT_ICONS[e.cat] || '✨'}</div>
         <div class="expense-info">
           <div class="expense-name">${e.name}</div>
-          <div class="expense-meta">${CAT_LABELS[e.cat] || '其他'} · NT$${Math.round(e.amt * RATE).toLocaleString()}</div>
+          <div class="expense-meta">${CAT_LABELS[e.cat] || '其他'} · NT$${ntdDisplay.toLocaleString()}</div>
         </div>
-        <div class="expense-amt">¥${e.amt.toLocaleString()}</div>
+        <div class="expense-amt">${mainAmtDisplay}</div>
         <button class="expense-delete" onclick="deleteExpense(${e.id})">×</button>
       </div>`;
                 });
