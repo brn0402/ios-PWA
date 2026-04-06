@@ -2539,17 +2539,26 @@
                     region: NOTION_REGION_MAP[selectedModalRegion] || '富山'
                 };
 
-                // PWA 背景送出 (加上 no-cors 防止跨域死當)
+                // PWA 背景送出
                 fetch(NOTION_GAS_URL, {
                     method: 'POST',
-                    mode: 'no-cors',
                     body: JSON.stringify(payload),
                     headers: {
                         'Content-Type': 'text/plain;charset=utf-8'
                     }
-                }).then(() => {
-                    // console.log("Notion sync triggered");
-                }).catch(err => console.error("Notion sync failed:", err));
+                })
+                .then(res => res.json())
+                .then(data => {
+                    console.log("Notion 伺服器回傳:", data);
+                    if (data.status === "error") {
+                        alert("GAS 程式發生錯誤:\n" + data.message);
+                    } else if (data.response && data.response.object === "error") {
+                        alert("Notion API 拒絕了請求，原因:\n" + data.response.message);
+                    }
+                })
+                .catch(err => {
+                    console.error("Notion 請求發送失敗:", err);
+                });
             }
         }
 
