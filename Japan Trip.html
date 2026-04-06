@@ -1502,7 +1502,12 @@
                 <!-- Summary -->
                 <div class="budget-summary">
                     <div class="budget-bg-text">¥</div>
-                    <div class="budget-total-label">TOTAL SPENT</div>
+                    <div style="display:flex; justify-content:space-between; align-items:flex-end;">
+                        <div class="budget-total-label">TOTAL SPENT</div>
+                        <button id="sync-btn" onclick="syncFromNotion()"
+                            style="background:var(--paper);border:1px solid rgba(139,58,42,0.15);padding:4px 10px;border-radius:12px;color:rgba(139,58,42,0.9);font-weight:700;font-size:12px;cursor:pointer;display:flex;align-items:center;gap:4px; margin-bottom:5px;">🔄
+                            同步 Notion</button>
+                    </div>
                     <div class="budget-total" id="total-jpy">¥ 0</div>
                     <div class="budget-twd" id="total-twd">≈ NT$ 0</div>
                     <div class="budget-cats">
@@ -2520,7 +2525,7 @@
             const date = document.getElementById('exp-date').value;
             if (!amt) { alert('請輸入金額'); return; }
             if (!date) { alert('請選擇日期'); return; }
-            
+
             // 寫入本地端 PWA，產生即時清單
             expenses.unshift({ cat: selectedCat, amt, currency: selectedCurrency, name, date, payer: selectedPayer, region: selectedModalRegion, id: Date.now() });
             localStorage.setItem('trip-expenses', JSON.stringify(expenses));
@@ -2547,18 +2552,18 @@
                         'Content-Type': 'text/plain;charset=utf-8'
                     }
                 })
-                .then(res => res.json())
-                .then(data => {
-                    console.log("Notion 伺服器回傳:", data);
-                    if (data.status === "error") {
-                        alert("GAS 程式發生錯誤:\n" + data.message);
-                    } else if (data.response && data.response.object === "error") {
-                        alert("Notion API 拒絕了請求，原因:\n" + data.response.message);
-                    }
-                })
-                .catch(err => {
-                    console.error("Notion 請求發送失敗:", err);
-                });
+                    .then(res => res.json())
+                    .then(data => {
+                        console.log("Notion 伺服器回傳:", data);
+                        if (data.status === "error") {
+                            alert("GAS 程式發生錯誤:\n" + data.message);
+                        } else if (data.response && data.response.object === "error") {
+                            alert("Notion API 拒絕了請求，原因:\n" + data.response.message);
+                        }
+                    })
+                    .catch(err => {
+                        console.error("Notion 請求發送失敗:", err);
+                    });
             }
         }
 
@@ -2566,6 +2571,54 @@
             expenses = expenses.filter(e => e.id !== id);
             localStorage.setItem('trip-expenses', JSON.stringify(expenses));
             renderExpenses();
+        }
+
+        async function syncFromNotion() {
+            const btn = document.getElementById('sync-btn');
+            if (btn) btn.innerHTML = '🔄 <span style="font-size:10px">讀取中...</span>';
+
+            if (!NOTION_GAS_URL || !NOTION_GAS_URL.startsWith('http')) {
+                alert("未設定 Notion 網址");
+                if (btn) btn.innerHTML = '🔄 同步 Notion';
+                return;
+            }
+
+            try {
+                const res = await fetch(NOTION_GAS_URL);
+                const json = await res.json();
+                if (json.status === 'success') {
+                    const notionData = json.data;
+                    expenses = notionData.map(item => {
+                        const isNtd = item.ntd > 0;
+                        return {
+                            id: item.id || Date.now() + Math.random(),
+                            name: item.name,
+                            date: item.date,
+                            amt: isNtd ? item.ntd : item.jpy,
+                            currency: isNtd ? 'NTD' : 'JPY',
+                            cat: Object.keys(NOTION_CAT_MAP).find(key => NOTION_CAT_MAP[key] === item.category) || 'other',
+                            payer: item.payer,
+                            region: Object.keys(NOTION_REGION_MAP).find(key => NOTION_REGION_MAP[key] === item.region) || 'toyama'
+                        };
+                    });
+
+                    // 根據日期排序 (最新的在前面)
+                    expenses.sort((a, b) => b.date.localeCompare(a.date));
+
+                    localStorage.setItem('trip-expenses', JSON.stringify(expenses));
+                    renderExpenses();
+
+                    if (btn) btn.innerHTML = '✅ <span style="font-size:10px">已同步</span>';
+                    setTimeout(() => { if (btn) btn.innerHTML = '🔄 同步 Notion'; }, 2000);
+                } else {
+                    alert('讀取失敗:\n' + json.message);
+                    if (btn) btn.innerHTML = '⚠️ 失敗';
+                }
+            } catch (err) {
+                console.error("Sync error:", err);
+                alert("無法連線到雲端資料庫。");
+                if (btn) btn.innerHTML = '⚠️ 失敗';
+            }
         }
 
         function renderExpenses() {
