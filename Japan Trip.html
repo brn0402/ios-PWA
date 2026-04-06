@@ -2514,39 +2514,47 @@
             'other': '雜費'
         };
 
-        function addExpense() {
-            const amt = parseInt(document.getElementById('exp-amt').value) || 0;
-            const name = document.getElementById('exp-name').value || '消費';
-            const date = document.getElementById('exp-date').value;
-            if (!amt) { alert('請輸入金額'); return; }
-            if (!date) { alert('請選擇日期'); return; }
-            expenses.unshift({ cat: selectedCat, amt, currency: selectedCurrency, name, date, payer: selectedPayer, region: selectedModalRegion, id: Date.now() });
-            localStorage.setItem('trip-expenses', JSON.stringify(expenses));
-            renderExpenses();
-            closeModal();
+        // 在 Japan Trip.html 內尋找 saveExpense 函式並替換
+        async function saveExpense() {
+            const name = document.getElementById('exp-name').value;
+            const jpy = document.getElementById('exp-jpy').value || 0;
+            const ntd = document.getElementById('exp-ntd').value || 0;
+            const cat = document.getElementById('exp-cat').value;
+            const reg = document.getElementById('exp-region').value;
 
-            // Background sync to Notion via GAS
-            if (NOTION_GAS_URL && NOTION_GAS_URL.startsWith('http')) {
-                const payload = {
-                    item: name,
-                    date: date,
-                    jpy: selectedCurrency === 'JPY' ? amt : null,
-                    ntd: selectedCurrency === 'NTD' ? amt : null,
-                    category: NOTION_CAT_MAP[selectedCat] || '雜費',
-                    payer: selectedPayer,
-                    region: NOTION_REGION_MAP[selectedModalRegion] || '富山'
-                };
+            if (!name) { alert("請輸入項目名稱"); return; }
 
-                fetch(NOTION_GAS_URL, {
+            // 準備傳送給 GAS 的資料
+            const expenseData = {
+                item: name,
+                date: new Date().toISOString().split('T')[0], // YYYY-MM-DD
+                jpy: parseFloat(jpy),
+                ntd: parseFloat(ntd),
+                category: cat,    // 需對應：食, 住, 行, 門票, 購物, 雜費
+                payer: "善綸",     // 如果你有選單，改用 document.getElementById('exp-payer').value
+                region: reg       // 需對應：富山, 金澤, 立山黑部, 東京
+            };
+
+            const gasUrl = "你的_GAS_部署網址"; // 務必換成最新的部署網址
+
+            try {
+                // 使用 no-cors 模式發送
+                await fetch(gasUrl, {
                     method: 'POST',
-                    body: JSON.stringify(payload),
-                    headers: {
-                        'Content-Type': 'text/plain'
-                    }
-                })
-                    .then(res => res.json())
-                    .then(data => console.log("Notion sync OK:", data))
-                    .catch(err => console.error("Notion sync failed:", err));
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'text/plain' },
+                    body: JSON.stringify(expenseData)
+                });
+
+                alert("已成功送往 Notion！");
+                closeModal();
+                // 清空表單
+                document.getElementById('exp-name').value = '';
+                document.getElementById('exp-jpy').value = '';
+                document.getElementById('exp-ntd').value = '';
+            } catch (error) {
+                console.error("Error:", error);
+                alert("傳送失敗，請查看控制台");
             }
         }
 
