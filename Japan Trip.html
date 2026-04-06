@@ -1951,10 +1951,20 @@
             <div class="modal-field">
                 <label class="modal-label">區域</label>
                 <div class="cat-grid" style="grid-template-columns: 1fr 1fr 1fr 1fr" id="region-grid">
-                    <div class="cat-opt" data-region="toyama" onclick="selModalRegion(this)" style="padding: 10px 2px;"><div class="cat-opt-label" style="margin-top:0">富山</div></div>
-                    <div class="cat-opt" data-region="kanazawa" onclick="selModalRegion(this)" style="padding: 10px 2px;"><div class="cat-opt-label" style="margin-top:0">金澤</div></div>
-                    <div class="cat-opt" data-region="tateyama" onclick="selModalRegion(this)" style="padding: 10px 2px;"><div class="cat-opt-label" style="margin-top:0">立山黑部</div></div>
-                    <div class="cat-opt" data-region="tokyo" onclick="selModalRegion(this)" style="padding: 10px 2px;"><div class="cat-opt-label" style="margin-top:0">東京</div></div>
+                    <div class="cat-opt" data-region="toyama" onclick="selModalRegion(this)" style="padding: 10px 2px;">
+                        <div class="cat-opt-label" style="margin-top:0">富山</div>
+                    </div>
+                    <div class="cat-opt" data-region="kanazawa" onclick="selModalRegion(this)"
+                        style="padding: 10px 2px;">
+                        <div class="cat-opt-label" style="margin-top:0">金澤</div>
+                    </div>
+                    <div class="cat-opt" data-region="tateyama" onclick="selModalRegion(this)"
+                        style="padding: 10px 2px;">
+                        <div class="cat-opt-label" style="margin-top:0">立山黑部</div>
+                    </div>
+                    <div class="cat-opt" data-region="tokyo" onclick="selModalRegion(this)" style="padding: 10px 2px;">
+                        <div class="cat-opt-label" style="margin-top:0">東京</div>
+                    </div>
                 </div>
             </div>
             <div class="modal-field">
@@ -2437,7 +2447,7 @@
         function openModal() {
             document.getElementById('expense-modal').classList.add('open');
             document.getElementById('exp-amt').focus();
-            
+
             // Set date to today
             const now = new Date();
             const yyyy = now.getFullYear();
@@ -2448,7 +2458,7 @@
             // Sync modal region to current activeRegion
             selectedModalRegion = activeRegion;
             document.querySelectorAll('#region-grid .cat-opt').forEach(c => {
-                if(c.dataset.region === activeRegion) {
+                if (c.dataset.region === activeRegion) {
                     c.classList.add('sel');
                 } else {
                     c.classList.remove('sel');
@@ -2531,9 +2541,12 @@
                     method: 'POST',
                     body: JSON.stringify(payload),
                     headers: {
-                        'Content-Type': 'text/plain;charset=utf-8'
+                        'Content-Type': 'text/plain'
                     }
-                }).catch(err => console.error("Notion sync failed:", err));
+                })
+                    .then(res => res.json())
+                    .then(data => console.log("Notion sync OK:", data))
+                    .catch(err => console.error("Notion sync failed:", err));
             }
         }
 
