@@ -1470,6 +1470,7 @@
                 <button class="region-btn active" onclick="setRegion('toyama')">富山 Toyama</button>
                 <button class="region-btn" onclick="setRegion('kanazawa')">金澤 Kanazawa</button>
                 <button class="region-btn" onclick="setRegion('tateyama')">立山 Tateyama</button>
+                <button class="region-btn" onclick="setRegion('tokyo')">東京 Tokyo</button>
             </div>
 
             <!-- Day grid -->
@@ -2169,6 +2170,46 @@
                             { time: '', name: '長野→新宿 高速巴士', note: '已購票 · 夜間班次', map: '' },
                         ]
                     },
+                ]
+            },
+            {
+                id: 'd9', label: 'D10 皇居/爵士', date: '4/16', weekday: '四',
+                region: 'tokyo',
+                subtitle: '押上/皇居/有樂町/六本木', weather: '⛅️ 18°~10°',
+                events: [
+                    { time: '上午', type: 'food', name: 'Kamepan 或 Roji cafe 🥐', note: 'Kamepan 押上\nRoji cafe 錦系町', map: 'https://maps.app.goo.gl/bneNwX1wbsH3LSWC8' },
+                    { time: '上午', type: 'highlight', name: '龜戶天神社', note: '看看紫藤花，輕鬆散步\n平日早上去人比較少', map: '' },
+                    { time: '中午', type: 'spot', name: '皇居東御苑', note: '9:00 - 18:00 (一五休)\n皇居一般參觀：上午場9點/中午12:30發號碼牌\n去禮品店逛伴手禮', map: '' },
+                    { time: '下午', type: 'spot', name: '有樂町 逛街', note: '美食：AFURI 有樂町, THE STAND 可麗露\n購物：Haruta皮鞋, lumine', map: '' },
+                    { time: '傍晚', type: 'spot', name: '六本木', note: '麻布台之丘\n入鹿 Tokyo', map: '' },
+                    {
+                        time: '晚上', type: 'transitGroup', name: '🍸 Jazz bar',
+                        note: 'Intro 或 The Deep',
+                        map: '',
+                        subEvents: [
+                            { time: '', name: 'Jazz spot intro', note: '1800或1830開門至半夜 (¥1500+調酒)', map: 'https://maps.app.goo.gl/1emJJb2tKXchgjbz7' },
+                            { time: '', name: 'The Deep', note: '1st set 19:30, 2nd set 21:00\n學生 ¥1650+550 (前一天預訂免550)', map: 'https://maps.app.goo.gl/9WV8gZ3bCVbEj4tR9' },
+                        ]
+                    },
+                ]
+            },
+            {
+                id: 'd10', label: 'D11 澀谷/自由之丘', date: '4/17', weekday: '五',
+                region: 'tokyo',
+                subtitle: '法式早餐 · 自由之丘', weather: '☀️ 20°~12°',
+                events: [
+                    { time: '早上', type: 'food', name: 'Bistro Rojiura', note: '法式吐司早餐', map: 'https://maps.app.goo.gl/dofojrLnRBNb9e8E6' },
+                    { time: '上午', type: 'spot', name: '澀谷 kiddyland', note: '看內褲兔', map: '' },
+                    { time: '下午', type: 'spot', name: '自由之丘', note: '從澀谷出發\n逛家具、選物', map: '' },
+                ]
+            },
+            {
+                id: 'd11', label: 'D12 返程', date: '4/18', weekday: '六',
+                region: 'tokyo',
+                subtitle: '銀座燒肉', weather: '⛅️ 19°~11°',
+                events: [
+                    { time: '中午', type: 'food', name: '焼肉うしごろ 銀座店', note: '午餐', map: '' },
+                    { time: '下午', type: 'transit', name: '前往機場', note: '搭機準備返台', map: '' },
                 ]
             },
         ];
